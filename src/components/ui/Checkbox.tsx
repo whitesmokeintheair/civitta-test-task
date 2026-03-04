@@ -1,40 +1,40 @@
 import React from 'react';
-import { Pressable, Text, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 type CheckboxProps = {
   checked: boolean;
-  label: string;
-  onToggle: () => void;
+  onChange: () => void;
 };
 
-export default function Checkbox({ checked, label, onToggle }: CheckboxProps) {
+export default function Checkbox({ checked, onChange }: CheckboxProps) {
   return (
-    <Pressable onPress={onToggle} style={styles.row}>
-      <View style={[styles.box, checked && styles.checked]} />
-      <Text style={styles.label}>{label}</Text>
+    <Pressable onPress={onChange} style={styles.button} hitSlop={8}>
+      <View style={styles.box}>{checked ? <View style={styles.inner} /> : null}</View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
+  button: {
+    minWidth: 28,
+    minHeight: 28,
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
   },
   box: {
-    width: 18,
-    height: 18,
+    width: 20,
+    height: 20,
     borderWidth: 1,
-    borderColor: '#9CA3AF',
+    borderColor: '#D2D6E0',
     borderRadius: 4,
     backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  checked: {
-    backgroundColor: '#2563EB',
-    borderColor: '#2563EB',
-  },
-  label: {
-    color: '#111827',
+  inner: {
+    width: 12,
+    height: 12,
+    borderRadius: 2,
+    backgroundColor: '#2F2CE5',
   },
 });

@@ -1,6 +1,8 @@
-import { api } from './api';
-import { SignupRequest, SignupResponse } from '../types/api';
+import { postJson } from './api';
+import { SignupRequest } from '../types/api';
 
-export async function signup(payload: SignupRequest): Promise<SignupResponse> {
-  return api.post<SignupResponse>('/signup', payload);
+const SIGNUP_ENDPOINT = 'https://artjoms-spole.fly.dev/signup';
+
+export async function signup(payload: SignupRequest): Promise<unknown> {
+  return postJson<SignupRequest, unknown>(SIGNUP_ENDPOINT, payload);
 }

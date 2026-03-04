@@ -1,9 +1,7 @@
 export type SignupRequest = {
+  name: string;
   email: string;
   password: string;
 };
 
-export type SignupResponse = {
-  id: string;
-  email: string;
-};
+export type SignupResponse = unknown;

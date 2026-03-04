@@ -1,24 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 type AvatarProps = {
-  initials: string;
+  size?: number;
+  uri?: string;
+  fallbackText?: string;
 };
 
-export default function Avatar({ initials }: AvatarProps) {
+export default function Avatar({ size = 44, uri, fallbackText = 'A' }: AvatarProps) {
+  const radius = size / 2;
+  const textSize = Math.max(14, Math.floor(size * 0.38));
+
   return (
-    <View style={styles.circle}>
-      <Text style={styles.text}>{initials}</Text>
+    <View style={[styles.circle, { width: size, height: size, borderRadius: radius }]}>
+      {uri ? (
+        <Image source={{ uri }} style={{ width: size, height: size, borderRadius: radius }} />
+      ) : (
+        <Text style={[styles.text, { fontSize: textSize }]}>{fallbackText.slice(0, 1).toUpperCase()}</Text>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   circle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#E5E7EB',
+    overflow: 'hidden',
+    backgroundColor: '#E8EBF7',
     alignItems: 'center',
     justifyContent: 'center',
   },

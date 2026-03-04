@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/app/AppNavigator';
+import { getHasSeenOnboarding } from './src/storage/onboarding';
+import { RootStackParamList } from './src/types/navigation';
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [initialRouteName, setInitialRouteName] =
+    useState<keyof RootStackParamList>('Onboarding');
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadOnboardingFlag() {
+      try {
+        const hasSeenOnboarding = await getHasSeenOnboarding();
+        if (!mounted) return;
+        setInitialRouteName(hasSeenOnboarding ? 'Signup' : 'Onboarding');
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    }
+
+    loadOnboardingFlag();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (isLoading) {
+    return <View style={{ flex: 1 }} />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <AppNavigator initialRouteName={initialRouteName} />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
