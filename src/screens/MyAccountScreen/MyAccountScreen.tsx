@@ -8,7 +8,7 @@ import { ContentContainer } from '../../components/layout/ContentContainer';
 import { HeaderAction } from '../../components/ui/HeaderAction';
 import { Avatar } from '../../components/ui/Avatar';
 import type { AccountData, Transaction } from '../../types/api';
-import type { MyAccountScreenProps } from '../../types/navigation';
+import type { MyAccountScreenProps } from '../../navigation/types';
 import { DEMO_SIGNUP_RESPONSE } from '../../services/signup';
 import { getStoredAccountData } from '../../storage/accountData';
 import { styles } from './styles';

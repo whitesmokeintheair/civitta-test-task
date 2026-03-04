@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { AppNavigator } from './src/app/AppNavigator';
+import { AppNavigator } from './src/navigation/AppNavigator';
 import { getAuthState } from './src/storage/authState';
-import { ScreenNames } from './src/constants/screens';
+import { ScreenNames } from './src/navigation/screens';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(true);

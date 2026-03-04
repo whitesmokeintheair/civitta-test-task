@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { OnboardingScreen } from '../screens/OnboardingScreen';
 import { SignupScreen } from '../screens/SignupScreen';
 import { MyAccountScreen } from '../screens/MyAccountScreen';
-import { ScreenNames } from '../constants/screens';
-import { RootStackParamList } from '../types/navigation';
+import { ScreenNames } from './screens';
+import { RootStackParamList } from './types';
 
 type InitialFlow = 'OnboardingFlow' | 'AuthFlow' | 'MainFlow';
 

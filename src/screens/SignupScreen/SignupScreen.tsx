@@ -15,11 +15,11 @@ import { AppInput } from '../../components/ui/AppInput';
 import { PasswordInput } from '../../components/ui/PasswordInput';
 import { Checkbox } from '../../components/ui/Checkbox';
 import { AppButton } from '../../components/ui/AppButton';
-import { ScreenNames } from '../../constants/screens';
+import { ScreenNames } from '../../navigation/screens';
 import { DEMO_SIGNUP_RESPONSE, signup } from '../../services/signup';
 import { setSignedUp } from '../../storage/authState';
 import { setStoredAccountData } from '../../storage/accountData';
-import type { SignupScreenProps } from '../../types/navigation';
+import type { SignupScreenProps } from '../../navigation/types';
 import { styles } from './styles';
 
 type FormErrors = {

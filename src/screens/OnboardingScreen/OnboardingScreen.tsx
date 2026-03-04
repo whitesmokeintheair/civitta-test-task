@@ -7,9 +7,9 @@ import { HeaderBar } from '../../components/layout/HeaderBar';
 import { ContentContainer } from '../../components/layout/ContentContainer';
 import { HeaderAction } from '../../components/ui/HeaderAction';
 import { AppButton } from '../../components/ui/AppButton';
-import { ScreenNames } from '../../constants/screens';
+import { ScreenNames } from '../../navigation/screens';
 import { setHasSeenOnboarding } from '../../storage/authState';
-import type { OnboardingScreenProps } from '../../types/navigation';
+import type { OnboardingScreenProps } from '../../navigation/types';
 import { styles } from './styles';
 
 const PAGES = [
