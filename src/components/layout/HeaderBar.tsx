@@ -7,11 +7,11 @@ type HeaderBarProps = {
 	rightAction?: ReactNode;
 };
 
-export default function HeaderBar({
+export const HeaderBar = ({
 	title,
 	leftAction,
 	rightAction,
-}: HeaderBarProps) {
+}: HeaderBarProps) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.sideSlot}>{leftAction}</View>
@@ -21,7 +21,7 @@ export default function HeaderBar({
 			<View style={[styles.sideSlot, styles.rightSlot]}>{rightAction}</View>
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {

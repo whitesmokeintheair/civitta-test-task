@@ -4,25 +4,23 @@ import {
 	Linking,
 	Platform,
 	ScrollView,
-	StyleSheet,
 	Text,
 	View,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PageContainer from '../components/layout/PageContainer';
-import HeaderBar from '../components/layout/HeaderBar';
-import HeaderAction from '../components/ui/HeaderAction';
-import AppInput from '../components/ui/AppInput';
-import PasswordInput from '../components/ui/PasswordInput';
-import Checkbox from '../components/ui/Checkbox';
-import AppButton from '../components/ui/AppButton';
-import { ScreenNames } from '../constants/screens';
-import { DEMO_SIGNUP_RESPONSE, signup } from '../services/signup';
-import { setSignedUp } from '../storage/authState';
-import { RootStackParamList } from '../types/navigation';
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
+import { PageContainer } from '../../components/layout/PageContainer';
+import { HeaderBar } from '../../components/layout/HeaderBar';
+import { HeaderAction } from '../../components/ui/HeaderAction';
+import { AppInput } from '../../components/ui/AppInput';
+import { PasswordInput } from '../../components/ui/PasswordInput';
+import { Checkbox } from '../../components/ui/Checkbox';
+import { AppButton } from '../../components/ui/AppButton';
+import { ScreenNames } from '../../constants/screens';
+import { DEMO_SIGNUP_RESPONSE, signup } from '../../services/signup';
+import { setSignedUp } from '../../storage/authState';
+import { setStoredAccountData } from '../../storage/accountData';
+import type { SignupScreenProps } from '../../types/navigation';
+import { styles } from './styles';
 
 type FormErrors = {
 	name?: string;
@@ -34,7 +32,7 @@ type FormErrors = {
 const LINK_URL = 'https://example.com';
 const FOOTER_BLOCK_HEIGHT = 118;
 
-export default function SignupScreen({ navigation }: Props) {
+export const SignupScreen = ({ navigation }: SignupScreenProps) => {
 	const insets = useSafeAreaInsets();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -93,7 +91,6 @@ export default function SignupScreen({ navigation }: Props) {
 				email: email.trim(),
 				password: password.trim(),
 			});
-			console.log('[signup] response:', response);
 			await setSignedUp(true, response);
 			const rootNav = navigation.getParent();
 			rootNav?.reset({
@@ -102,7 +99,6 @@ export default function SignupScreen({ navigation }: Props) {
 			});
 		} catch (e: unknown) {
 			if (e instanceof Error) {
-				console.log('[signup] error:', e.message);
 				setSubmitError('Signup failed. Please try again.');
 			}
 		} finally {
@@ -112,7 +108,8 @@ export default function SignupScreen({ navigation }: Props) {
 
 	const proceedWithDemoData = async () => {
 		setSubmitError(null);
-		await setSignedUp(true, DEMO_SIGNUP_RESPONSE);
+		await setStoredAccountData(DEMO_SIGNUP_RESPONSE);
+		await setSignedUp(true);
 
 		const rootNav = navigation.getParent();
 		rootNav?.reset({
@@ -268,69 +265,4 @@ export default function SignupScreen({ navigation }: Props) {
 			</KeyboardAvoidingView>
 		</PageContainer>
 	);
-}
-
-const styles = StyleSheet.create({
-	flex: {
-		flex: 1,
-	},
-	scrollContent: {
-		flexGrow: 1,
-		paddingHorizontal: 20,
-		paddingTop: 36,
-	},
-	title: {
-		fontSize: 44,
-		lineHeight: 50,
-		fontWeight: '700',
-		color: '#3121D5',
-	},
-	subtitle: {
-		marginTop: 10,
-		fontSize: 17,
-		lineHeight: 26,
-		color: '#6B7280',
-	},
-	inputs: {
-		marginTop: 32,
-		gap: 16,
-	},
-	termsRow: {
-		marginTop: 18,
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		gap: 12,
-	},
-	termsText: {
-		flex: 1,
-		fontSize: 14,
-		lineHeight: 22,
-		color: '#1F2937',
-	},
-	link: {
-		color: '#2F2CE5',
-	},
-	termsError: {
-		marginTop: 8,
-		fontSize: 12,
-		lineHeight: 16,
-		color: '#DC2626',
-	},
-	footer: {
-		gap: 16,
-		paddingHorizontal: 20,
-		backgroundColor: '#F4F6FF',
-	},
-	footerText: {
-		textAlign: 'center',
-		fontSize: 16,
-		lineHeight: 24,
-		color: '#111827',
-	},
-	submitError: {
-		textAlign: 'center',
-		fontSize: 13,
-		lineHeight: 18,
-		color: '#DC2626',
-	},
-});
+};

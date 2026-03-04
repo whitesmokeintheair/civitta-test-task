@@ -4,25 +4,36 @@ export type SignupRequest = {
 	password: string;
 };
 
-export type SignupTransaction = {
-	name: string;
-	meta: string;
+export type Transaction = {
+	initial: string;
+	title: string;
+	subtitle: string;
 	amount: string;
+	positive?: boolean;
 };
 
-export type SignupAccount = {
-	bank: string;
-	type: string;
-	balance: string;
-};
-
-export type SignupUser = {
+export type AccountProfile = {
 	name: string;
-	email: string;
+	avatarInitial: string;
 };
 
-export type SignupResponse = {
-	user: SignupUser;
-	account: SignupAccount;
-	transactions: SignupTransaction[];
+export type BankInfo = {
+	name: string;
+	logoText: string;
 };
+
+export type AccountInfo = {
+	type: string;
+	number: string;
+	availableBalance: string;
+	dateAdded: string;
+};
+
+export type AccountData = {
+	profile: AccountProfile;
+	bank: BankInfo;
+	account: AccountInfo;
+	transactions: Transaction[];
+};
+
+export type SignupResponse = AccountData;

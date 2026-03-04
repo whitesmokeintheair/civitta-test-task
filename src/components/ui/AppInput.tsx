@@ -20,7 +20,7 @@ type AppInputProps = {
 	right?: ReactNode;
 };
 
-export default function AppInput({
+export const AppInput = ({
 	label,
 	value,
 	onChangeText,
@@ -30,7 +30,7 @@ export default function AppInput({
 	secureTextEntry,
 	error,
 	right,
-}: AppInputProps) {
+}: AppInputProps) => {
 	return (
 		<View style={styles.wrapper}>
 			<View style={styles.inputBox}>
@@ -52,7 +52,7 @@ export default function AppInput({
 			{error ? <Text style={styles.errorText}>{error}</Text> : null}
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	wrapper: {

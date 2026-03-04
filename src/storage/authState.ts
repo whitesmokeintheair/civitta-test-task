@@ -1,34 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SignupResponse } from '../types/api';
+import type { AccountData } from '../types/api';
+import {
+	clearStoredAccountData,
+	getStoredAccountData,
+	setStoredAccountData,
+} from './accountData';
 
 const HAS_SEEN_ONBOARDING_KEY = 'has_seen_onboarding_v1';
 const IS_SIGNED_UP_KEY = 'is_signed_up_v1';
-const ACCOUNT_DATA_KEY = 'account_data_v1';
 
 export type AuthState = {
 	hasSeenOnboarding: boolean;
 	isSignedUp: boolean;
-	accountData?: unknown;
+	accountData?: AccountData;
 };
 
 export async function getAuthState(): Promise<AuthState> {
 	try {
-		const [hasSeenValue, isSignedUpValue, accountDataValue] = await Promise.all(
+		const [hasSeenValue, isSignedUpValue, accountData] = await Promise.all(
 			[
 				AsyncStorage.getItem(HAS_SEEN_ONBOARDING_KEY),
 				AsyncStorage.getItem(IS_SIGNED_UP_KEY),
-				AsyncStorage.getItem(ACCOUNT_DATA_KEY),
+				getStoredAccountData(),
 			],
 		);
-
-		let accountData: unknown;
-		if (accountDataValue) {
-			try {
-				accountData = JSON.parse(accountDataValue);
-			} catch {
-				accountData = accountDataValue;
-			}
-		}
 
 		return {
 			hasSeenOnboarding: hasSeenValue === 'true',
@@ -51,30 +46,20 @@ export async function setHasSeenOnboarding(value = true): Promise<void> {
 
 export async function setSignedUp(
 	value = true,
-	accountData?: SignupResponse,
+	accountData?: AccountData,
 ): Promise<void> {
 	try {
-		const operations: Promise<void>[] = [
-			AsyncStorage.setItem(IS_SIGNED_UP_KEY, String(value)),
-		];
-
-		if (accountData === undefined) {
-			operations.push(AsyncStorage.removeItem(ACCOUNT_DATA_KEY));
-		} else {
-			operations.push(
-				AsyncStorage.setItem(ACCOUNT_DATA_KEY, JSON.stringify(accountData)),
-			);
+		await AsyncStorage.setItem(IS_SIGNED_UP_KEY, String(value));
+		if (accountData !== undefined) {
+			await setStoredAccountData(accountData);
+		} else if (!value) {
+			await clearStoredAccountData();
 		}
-
-		await Promise.all(operations);
 	} catch {}
 }
 
 export async function clearSignedUp(): Promise<void> {
 	try {
-		await Promise.all([
-			AsyncStorage.removeItem(IS_SIGNED_UP_KEY),
-			AsyncStorage.removeItem(ACCOUNT_DATA_KEY),
-		]);
+		await Promise.all([AsyncStorage.removeItem(IS_SIGNED_UP_KEY), clearStoredAccountData()]);
 	} catch {}
 }

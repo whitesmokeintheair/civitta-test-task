@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import OnboardingScreen from '../screens/OnboardingScreen';
-import SignupScreen from '../screens/SignupScreen';
-import MyAccountScreen from '../screens/MyAccountScreen';
+import { OnboardingScreen } from '../screens/OnboardingScreen';
+import { SignupScreen } from '../screens/SignupScreen';
+import { MyAccountScreen } from '../screens/MyAccountScreen';
 import { ScreenNames } from '../constants/screens';
 import { RootStackParamList } from '../types/navigation';
 
@@ -29,31 +29,31 @@ const Main = createNativeStackNavigator<
   Pick<RootStackParamList, typeof ScreenNames.MyAccount>
 >();
 
-function OnboardingStack() {
+const OnboardingStack = () => {
   return (
     <Onboarding.Navigator screenOptions={{ headerShown: false }}>
       <Onboarding.Screen name={ScreenNames.Onboarding} component={OnboardingScreen} />
     </Onboarding.Navigator>
   );
-}
+};
 
-function AuthStack() {
+const AuthStack = () => {
   return (
     <Auth.Navigator screenOptions={{ headerShown: false }}>
       <Auth.Screen name={ScreenNames.Signup} component={SignupScreen} />
     </Auth.Navigator>
   );
-}
+};
 
-function MainStack() {
+const MainStack = () => {
   return (
     <Main.Navigator screenOptions={{ headerShown: false }}>
       <Main.Screen name={ScreenNames.MyAccount} component={MyAccountScreen} />
     </Main.Navigator>
   );
-}
+};
 
-export default function AppNavigator({ initialFlow }: AppNavigatorProps) {
+export const AppNavigator = ({ initialFlow }: AppNavigatorProps) => {
   return (
     <Root.Navigator initialRouteName={initialFlow} screenOptions={{ headerShown: false }}>
       <Root.Screen
@@ -64,4 +64,4 @@ export default function AppNavigator({ initialFlow }: AppNavigatorProps) {
       <Root.Screen name={ScreenNames.Root.MainFlow} component={MainStack} />
     </Root.Navigator>
   );
-}
+};

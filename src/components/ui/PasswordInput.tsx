@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AppInput from './AppInput';
+import { AppInput } from './AppInput';
 
 type PasswordInputProps = {
   label: string;
@@ -11,13 +11,13 @@ type PasswordInputProps = {
   error?: string;
 };
 
-export default function PasswordInput({
+export const PasswordInput = ({
   label,
   value,
   onChangeText,
   placeholder,
   error,
-}: PasswordInputProps) {
+}: PasswordInputProps) => {
   const [isHidden, setIsHidden] = useState(true);
 
 	const toggle = (
@@ -51,4 +51,4 @@ export default function PasswordInput({
       />
     </View>
   );
-}
+};

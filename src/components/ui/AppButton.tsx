@@ -8,12 +8,12 @@ type AppButtonProps = {
 	loading?: boolean;
 };
 
-export default function AppButton({
+export const AppButton = ({
 	title,
 	onPress,
 	disabled = false,
 	loading = false,
-}: AppButtonProps) {
+}: AppButtonProps) => {
 	const isDisabled = disabled || loading;
 
 	return (
@@ -33,7 +33,7 @@ export default function AppButton({
 			)}
 		</Pressable>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	button: {

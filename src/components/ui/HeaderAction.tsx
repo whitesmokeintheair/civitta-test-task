@@ -10,13 +10,13 @@ type HeaderActionProps = {
 	disabled?: boolean;
 };
 
-export default function HeaderAction({
+export const HeaderAction = ({
 	type,
 	label,
 	icon,
 	onPress,
 	disabled = false,
-}: HeaderActionProps) {
+}: HeaderActionProps) => {
 	const isIcon = type === 'icon';
 	const content =
 		isIcon ? (
@@ -41,7 +41,7 @@ export default function HeaderAction({
 			{content}
 		</Pressable>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	buttonBase: {

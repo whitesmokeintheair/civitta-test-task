@@ -1,15 +1,43 @@
-import axios from 'axios';
 import { postJson } from './api';
 import type { SignupRequest, SignupResponse } from '../types/api';
 
 export const DEMO_SIGNUP_RESPONSE: SignupResponse = {
-	user: { name: 'Demo User', email: 'demo@example.com' },
-	account: { bank: 'Demo Bank', type: 'Savings', balance: '+$12,480.00' },
+	profile: { name: 'John Ogaga', avatarInitial: 'J' },
+	bank: { name: 'Kuda Bank', logoText: 'K' },
+	account: {
+		type: 'Savings',
+		number: '1234567890',
+		availableBalance: 'N12,000.00',
+		dateAdded: '15/05/20, 10:03 AM',
+	},
 	transactions: [
-		{ name: 'Alice', meta: 'Demo Bank • 10:12', amount: '+$280.00' },
-		{ name: 'Groceries', meta: 'Demo Bank • Yesterday', amount: '-$43.20' },
+		{
+			initial: 'J',
+			title: 'John Ogaga',
+			subtitle: 'Zenith Bank 12:03 AM',
+			amount: '+N20,983',
+			positive: true,
+		},
+		{
+			initial: 'T',
+			title: 'The Place Restuarant',
+			subtitle: 'GT-Bank 12:03 AM',
+			amount: '-N983',
+		},
+		{
+			initial: 'P',
+			title: 'Transfer to Philip',
+			subtitle: 'GT-Bank 12:03 AM',
+			amount: '-N298',
+		},
+		{
+			initial: 'H',
+			title: 'Habib Yogurt',
+			subtitle: 'GT-Bank 12:03 AM',
+			amount: '-N4,115',
+		},
 	],
-} as const;
+};
 
 const SIGNUP_ENDPOINT = 'https://artjoms-spole.fly.dev/signup';
 

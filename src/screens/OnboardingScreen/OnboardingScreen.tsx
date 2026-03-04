@@ -1,24 +1,16 @@
 import React, { useRef, useState } from 'react';
-import {
-	Image,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
+import { Image, Text, View, useWindowDimensions } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import PageContainer from '../components/layout/PageContainer';
-import HeaderBar from '../components/layout/HeaderBar';
-import ContentContainer from '../components/layout/ContentContainer';
-import HeaderAction from '../components/ui/HeaderAction';
-import AppButton from '../components/ui/AppButton';
-import { ScreenNames } from '../constants/screens';
-import { setHasSeenOnboarding } from '../storage/authState';
-import { RootStackParamList } from '../types/navigation';
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
+import { PageContainer } from '../../components/layout/PageContainer';
+import { HeaderBar } from '../../components/layout/HeaderBar';
+import { ContentContainer } from '../../components/layout/ContentContainer';
+import { HeaderAction } from '../../components/ui/HeaderAction';
+import { AppButton } from '../../components/ui/AppButton';
+import { ScreenNames } from '../../constants/screens';
+import { setHasSeenOnboarding } from '../../storage/authState';
+import type { OnboardingScreenProps } from '../../types/navigation';
+import { styles } from './styles';
 
 const PAGES = [
 	{
@@ -39,7 +31,7 @@ const PAGES = [
 	},
 ];
 
-export default function OnboardingScreen({ navigation }: Props) {
+export const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
 	const { height: screenHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const pagerRef = useRef<PagerView>(null);
@@ -87,9 +79,9 @@ export default function OnboardingScreen({ navigation }: Props) {
 				/>
 			}
 		>
-			<View style={[styles.screen, { paddingBottom: screenBottomPadding }]}>
+			<View style={[styles.screen, { paddingBottom: screenBottomPadding }]}> 
 				<Image
-					source={require('../../assets/onboarding.png')}
+					source={require('../../../assets/onboarding.png')}
 					resizeMode='contain'
 					style={{ height: imageHeight }}
 				/>
@@ -133,59 +125,4 @@ export default function OnboardingScreen({ navigation }: Props) {
 			</View>
 		</PageContainer>
 	);
-}
-
-const styles = StyleSheet.create({
-	screen: {
-		flex: 1,
-		alignItems: 'center',
-		paddingHorizontal: 20,
-		paddingTop: 6,
-		paddingBottom: 24,
-		justifyContent: 'space-between',
-	},
-	card: {
-		flex: 0,
-		marginTop: 12,
-		width: '100%',
-		borderRadius: 36,
-		paddingHorizontal: 20,
-		paddingVertical: 36,
-	},
-	pager: {
-		width: '100%',
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: '700',
-		color: '#3121D5',
-		textAlign: 'center',
-	},
-	body: {
-		marginTop: 16,
-		fontSize: 14,
-		lineHeight: 21,
-		color: '#6B7280',
-		textAlign: 'center',
-		paddingHorizontal: 16,
-	},
-	dotsRow: {
-		marginBottom: 18,
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center',
-		gap: 6,
-	},
-	dot: {
-		width: 6,
-		height: 6,
-		borderRadius: 4,
-		backgroundColor: '#D1D5DB',
-	},
-	activeDot: {
-		width: 6,
-		height: 18,
-		borderRadius: 5,
-		backgroundColor: '#2F2CE5',
-	},
-});
+};

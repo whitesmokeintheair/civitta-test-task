@@ -6,13 +6,13 @@ type CheckboxProps = {
   onChange: () => void;
 };
 
-export default function Checkbox({ checked, onChange }: CheckboxProps) {
+export const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   return (
     <Pressable onPress={onChange} style={styles.button} hitSlop={8}>
       <View style={styles.box}>{checked ? <View style={styles.inner} /> : null}</View>
     </Pressable>
   );
-}
+};
 
 const styles = StyleSheet.create({
   button: {

@@ -14,12 +14,12 @@ type ContentContainerProps = PropsWithChildren<{
 	style?: StyleProp<ViewStyle>;
 }>;
 
-export default function ContentContainer({
+export const ContentContainer = ({
 	children,
 	hasHeader = false,
 	headerTitle,
 	style,
-}: ContentContainerProps) {
+}: ContentContainerProps) => {
 	return (
 		<View style={[styles.container, style]}>
 			{hasHeader ? (
@@ -33,7 +33,7 @@ export default function ContentContainer({
 			{children}
 		</View>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {

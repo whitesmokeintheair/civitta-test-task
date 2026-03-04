@@ -7,10 +7,10 @@ type PageContainerProps = {
 	header?: ReactNode;
 };
 
-export default function PageContainer({
+export const PageContainer = ({
 	children,
 	header,
-}: PageContainerProps) {
+}: PageContainerProps) => {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
@@ -19,7 +19,7 @@ export default function PageContainer({
 			</View>
 		</SafeAreaView>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	safeArea: {

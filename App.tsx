@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './src/app/AppNavigator';
+import { AppNavigator } from './src/app/AppNavigator';
 import { getAuthState } from './src/storage/authState';
 import { ScreenNames } from './src/constants/screens';
 
-export default function App() {
+export const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [initialFlow, setInitialFlow] =
     useState<'OnboardingFlow' | 'AuthFlow' | 'MainFlow'>('OnboardingFlow');
@@ -45,4 +45,4 @@ export default function App() {
       <AppNavigator initialFlow={initialFlow} />
     </NavigationContainer>
   );
-}
+};
