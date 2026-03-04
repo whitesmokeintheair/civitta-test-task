@@ -9,6 +9,7 @@ import {
 	View,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PageContainer from '../components/layout/PageContainer';
 import HeaderBar from '../components/layout/HeaderBar';
 import HeaderAction from '../components/ui/HeaderAction';
@@ -29,8 +30,10 @@ type FormErrors = {
 };
 
 const LINK_URL = 'https://example.com';
+const FOOTER_BLOCK_HEIGHT = 118;
 
 export default function SignupScreen({ navigation }: Props) {
+	const insets = useSafeAreaInsets();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -91,152 +94,136 @@ export default function SignupScreen({ navigation }: Props) {
 	};
 
 	return (
-		<PageContainer>
+		<PageContainer
+			header={
+				<HeaderBar
+					leftAction={
+						<HeaderAction
+							type='icon'
+							onPress={() => navigation.goBack()}
+						/>
+					}
+				/>
+			}
+		>
 			<KeyboardAvoidingView
 				style={styles.flex}
 				behavior={Platform.OS === 'ios' ? 'padding' : undefined}
 			>
-				<ScrollView
-					style={styles.flex}
-					contentContainerStyle={styles.scrollContent}
-					keyboardShouldPersistTaps='handled'
-					showsVerticalScrollIndicator={false}
-				>
-					<View>
-						<Text
-							style={{
-								fontSize: 48,
-								lineHeight: 54,
-								fontWeight: '700',
-								color: '#3121D5',
-							}}
-						>
-							Create account
-						</Text>
-						<Text
-							style={{
-								marginTop: 10,
-								fontSize: 17,
-								lineHeight: 26,
-								color: '#6B7280',
-							}}
-						>
-							Complete the sign up to get started
-						</Text>
+				<View style={styles.flex}>
+					<ScrollView
+						style={styles.flex}
+						contentContainerStyle={[
+							styles.scrollContent,
+							{
+								paddingBottom:
+									Math.max(24, insets.bottom + 14) + FOOTER_BLOCK_HEIGHT,
+							},
+						]}
+						keyboardShouldPersistTaps='handled'
+						showsVerticalScrollIndicator={false}
+					>
+						<View>
+							<Text style={styles.title}>Create account</Text>
+							<Text style={styles.subtitle}>
+								Complete the sign up to get started
+							</Text>
 
-						<View style={styles.inputs}>
-							<AppInput
-								label='Name'
-								value={name}
-								onChangeText={(value) => {
-									setName(value);
-									if (errors.name)
-										setErrors((prev) => ({ ...prev, name: undefined }));
-								}}
-								autoCapitalize='words'
-								placeholder='Your full name'
-								error={errors.name}
-							/>
-							<AppInput
-								label='Email'
-								value={email}
-								onChangeText={(value) => {
-									setEmail(value);
-									if (errors.email)
-										setErrors((prev) => ({ ...prev, email: undefined }));
-								}}
-								keyboardType='email-address'
-								placeholder='you@email.com'
-								error={errors.email}
-							/>
-							<PasswordInput
-								label='Password'
-								value={password}
-								onChangeText={(value) => {
-									setPassword(value);
-									if (errors.password)
-										setErrors((prev) => ({ ...prev, password: undefined }));
-								}}
-								placeholder='Enter password'
-								error={errors.password}
-							/>
-						</View>
+							<View style={styles.inputs}>
+								<AppInput
+									label='Name'
+									value={name}
+									onChangeText={(value) => {
+										setName(value);
+										if (errors.name)
+											setErrors((prev) => ({ ...prev, name: undefined }));
+									}}
+									autoCapitalize='words'
+									placeholder='Your full name'
+									error={errors.name}
+								/>
+								<AppInput
+									label='Email'
+									value={email}
+									onChangeText={(value) => {
+										setEmail(value);
+										if (errors.email)
+											setErrors((prev) => ({ ...prev, email: undefined }));
+									}}
+									keyboardType='email-address'
+									placeholder='you@email.com'
+									error={errors.email}
+								/>
+								<PasswordInput
+									label='Password'
+									value={password}
+									onChangeText={(value) => {
+										setPassword(value);
+										if (errors.password) {
+											setErrors((prev) => ({ ...prev, password: undefined }));
+										}
+									}}
+									placeholder='Enter password'
+									error={errors.password}
+								/>
+							</View>
 
-						<View style={styles.termsRow}>
-							<Checkbox
-								checked={acceptedTerms}
-								onChange={() => {
-									setAcceptedTerms((prev) => !prev);
-									if (errors.terms)
-										setErrors((prev) => ({ ...prev, terms: undefined }));
-								}}
-							/>
-							<Text
-								style={{
-									flex: 1,
-									fontSize: 14,
-									lineHeight: 22,
-									color: '#1F2937',
-								}}
-							>
-								By signing up, you agree to the{' '}
-								<Text
-									style={{ color: '#2F2CE5' }}
-									onPress={openExampleLink}
-								>
-									Terms of Service
-								</Text>{' '}
-								and{' '}
-								<Text
-									style={{ color: '#2F2CE5' }}
-									onPress={openExampleLink}
-								>
-									Privacy Policy
+							<View style={styles.termsRow}>
+								<Checkbox
+									checked={acceptedTerms}
+									onChange={() => {
+										setAcceptedTerms((prev) => !prev);
+										if (errors.terms)
+											setErrors((prev) => ({ ...prev, terms: undefined }));
+									}}
+								/>
+								<Text style={styles.termsText}>
+									By signing up, you agree to the{' '}
+									<Text
+										style={styles.link}
+										onPress={openExampleLink}
+									>
+										Terms of Service
+									</Text>{' '}
+									and{' '}
+									<Text
+										style={styles.link}
+										onPress={openExampleLink}
+									>
+										Privacy Policy
+									</Text>
 								</Text>
-							</Text>
+							</View>
+							{errors.terms ? (
+								<Text style={styles.termsError}>{errors.terms}</Text>
+							) : null}
 						</View>
-						{errors.terms ? (
-							<Text
-								style={{
-									marginTop: 8,
-									fontSize: 12,
-									lineHeight: 16,
-									color: '#DC2626',
-								}}
-							>
-								{errors.terms}
-							</Text>
-						) : null}
-					</View>
+					</ScrollView>
 
-					<View style={styles.footer}>
-						<Text
-							style={{
-								textAlign: 'center',
-								fontSize: 16,
-								lineHeight: 24,
-								color: '#111827',
-							}}
-						>
+					<View
+						style={[
+							styles.footer,
+							{ paddingBottom: Math.max(8, insets.bottom + 4) },
+						]}
+					>
+						<Text style={styles.footerText}>
 							Already have an account?{' '}
 							<Text
-								style={{ color: '#2F2CE5' }}
+								style={styles.link}
 								onPress={openExampleLink}
 							>
 								Sign in
 							</Text>
 						</Text>
 
-						<View style={styles.buttonWrap}>
-							<AppButton
-								title='Create account'
-								onPress={onSubmit}
-								loading={isSubmitting}
-								disabled={!canSubmit}
-							/>
-						</View>
+						<AppButton
+							title='Create account'
+							onPress={onSubmit}
+							loading={isSubmitting}
+							disabled={!canSubmit}
+						/>
 					</View>
-				</ScrollView>
+				</View>
 			</KeyboardAvoidingView>
 		</PageContainer>
 	);
@@ -248,26 +235,60 @@ const styles = StyleSheet.create({
 	},
 	scrollContent: {
 		flexGrow: 1,
-		justifyContent: 'space-between',
 		paddingHorizontal: 20,
-		paddingTop: 18,
-		paddingBottom: 24,
+		paddingTop: 36,
+	},
+	title: {
+		fontSize: 44,
+		lineHeight: 50,
+		fontWeight: '700',
+		color: '#3121D5',
+	},
+	subtitle: {
+		marginTop: 10,
+		fontSize: 17,
+		lineHeight: 26,
+		color: '#6B7280',
 	},
 	inputs: {
-		marginTop: 28,
-		gap: 14,
+		marginTop: 32,
+		gap: 16,
 	},
 	termsRow: {
-		marginTop: 20,
+		marginTop: 18,
 		flexDirection: 'row',
 		alignItems: 'flex-start',
-		gap: 10,
+		gap: 12,
+	},
+	termsText: {
+		flex: 1,
+		fontSize: 14,
+		lineHeight: 22,
+		color: '#1F2937',
+	},
+	link: {
+		color: '#2F2CE5',
+	},
+	termsError: {
+		marginTop: 8,
+		fontSize: 12,
+		lineHeight: 16,
+		color: '#DC2626',
 	},
 	footer: {
-		marginTop: 26,
-		gap: 18,
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		bottom: 0,
+		gap: 16,
+		paddingHorizontal: 20,
+		paddingTop: 8,
+		backgroundColor: '#F4F6FF',
 	},
-	buttonWrap: {
-		marginBottom: 6,
+	footerText: {
+		textAlign: 'center',
+		fontSize: 16,
+		lineHeight: 24,
+		color: '#111827',
 	},
 });

@@ -22,9 +22,14 @@ export default function PasswordInput({
   const toggle = (
     <Pressable
       onPress={() => setIsHidden((prev) => !prev)}
-      style={{ minWidth: 30, minHeight: 30, alignItems: 'center', justifyContent: 'center' }}
+      style={{
+        minWidth: 28,
+        minHeight: 28,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
-      <Text style={{ fontSize: 18 }}>{isHidden ? '👁' : '🙈'}</Text>
+      <Text style={{ fontSize: 18, color: '#2F2CE5' }}>{isHidden ? '👁' : '🙈'}</Text>
     </Pressable>
   );
 

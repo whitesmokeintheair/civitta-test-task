@@ -16,8 +16,9 @@ export default function HeaderAction({
 	onPress,
 	disabled = false,
 }: HeaderActionProps) {
+	const isIcon = type === 'icon';
 	const content =
-		type === 'icon' ? (
+		isIcon ? (
 			(icon ?? <Text style={styles.iconText}>{'<'}</Text>)
 		) : (
 			<Text style={styles.textLabel}>{label}</Text>
@@ -26,7 +27,11 @@ export default function HeaderAction({
 	return (
 		<Pressable
 			onPress={onPress}
-			style={[styles.button, disabled && styles.disabled]}
+			style={[
+				styles.buttonBase,
+				isIcon ? styles.iconButton : styles.textButton,
+				disabled && styles.disabled,
+			]}
 			hitSlop={8}
 			disabled={disabled}
 		>
@@ -36,15 +41,22 @@ export default function HeaderAction({
 }
 
 const styles = StyleSheet.create({
-	button: {
-		minWidth: 64,
+	buttonBase: {
 		minHeight: 44,
-		borderRadius: 22,
 		backgroundColor: '#FFFFFF',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	textButton: {
+		borderRadius: 22,
 		paddingHorizontal: 14,
 		paddingVertical: 10,
+		alignSelf: 'flex-start',
+	},
+	iconButton: {
+		width: 44,
+		height: 44,
+		borderRadius: 22,
 	},
 	disabled: {
 		opacity: 0.5,
