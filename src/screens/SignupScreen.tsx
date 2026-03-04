@@ -17,7 +17,9 @@ import AppInput from '../components/ui/AppInput';
 import PasswordInput from '../components/ui/PasswordInput';
 import Checkbox from '../components/ui/Checkbox';
 import AppButton from '../components/ui/AppButton';
+import { ScreenNames } from '../constants/screens';
 import { signup } from '../services/signup';
+import { setSignedUp } from '../storage/authState';
 import { RootStackParamList } from '../types/navigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
@@ -87,7 +89,12 @@ export default function SignupScreen({ navigation }: Props) {
 				email: email.trim(),
 				password: password.trim(),
 			});
-			navigation.navigate('MyAccount', { data: response });
+			await setSignedUp(true, response);
+			const rootNav = navigation.getParent();
+			rootNav?.reset({
+				index: 0,
+				routes: [{ name: ScreenNames.Root.MainFlow }],
+			});
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -109,6 +116,7 @@ export default function SignupScreen({ navigation }: Props) {
 			<KeyboardAvoidingView
 				style={styles.flex}
 				behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 56 : 0}
 			>
 				<View style={styles.flex}>
 					<ScrollView
@@ -116,11 +124,11 @@ export default function SignupScreen({ navigation }: Props) {
 						contentContainerStyle={[
 							styles.scrollContent,
 							{
-								paddingBottom:
-									Math.max(24, insets.bottom + 14) + FOOTER_BLOCK_HEIGHT,
+								paddingBottom: FOOTER_BLOCK_HEIGHT + insets.bottom,
 							},
 						]}
 						keyboardShouldPersistTaps='handled'
+						keyboardDismissMode={Platform.OS === 'ios' ? 'on-drag' : 'none'}
 						showsVerticalScrollIndicator={false}
 					>
 						<View>
@@ -200,12 +208,7 @@ export default function SignupScreen({ navigation }: Props) {
 						</View>
 					</ScrollView>
 
-					<View
-						style={[
-							styles.footer,
-							{ paddingBottom: Math.max(8, insets.bottom + 4) },
-						]}
-					>
+					<View style={styles.footer}>
 						<Text style={styles.footerText}>
 							Already have an account?{' '}
 							<Text
@@ -276,13 +279,8 @@ const styles = StyleSheet.create({
 		color: '#DC2626',
 	},
 	footer: {
-		position: 'absolute',
-		left: 0,
-		right: 0,
-		bottom: 0,
 		gap: 16,
 		paddingHorizontal: 20,
-		paddingTop: 8,
 		backgroundColor: '#F4F6FF',
 	},
 	footerText: {

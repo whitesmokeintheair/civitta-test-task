@@ -2,22 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/app/AppNavigator';
-import { getHasSeenOnboarding } from './src/storage/onboarding';
-import { RootStackParamList } from './src/types/navigation';
+import { getAuthState } from './src/storage/authState';
+import { ScreenNames } from './src/constants/screens';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [initialRouteName, setInitialRouteName] =
-    useState<keyof RootStackParamList>('Onboarding');
+  const [initialFlow, setInitialFlow] =
+    useState<'OnboardingFlow' | 'AuthFlow' | 'MainFlow'>('OnboardingFlow');
 
   useEffect(() => {
     let mounted = true;
 
     async function loadOnboardingFlag() {
       try {
-        const hasSeenOnboarding = await getHasSeenOnboarding();
+        const { hasSeenOnboarding, isSignedUp } = await getAuthState();
         if (!mounted) return;
-        setInitialRouteName(hasSeenOnboarding ? 'Signup' : 'Onboarding');
+        if (!hasSeenOnboarding) {
+          setInitialFlow(ScreenNames.Root.OnboardingFlow);
+        } else if (!isSignedUp) {
+          setInitialFlow(ScreenNames.Root.AuthFlow);
+        } else {
+          setInitialFlow(ScreenNames.Root.MainFlow);
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -36,7 +42,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <AppNavigator initialRouteName={initialRouteName} />
+      <AppNavigator initialFlow={initialFlow} />
     </NavigationContainer>
   );
 }

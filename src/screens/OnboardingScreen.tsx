@@ -14,7 +14,8 @@ import HeaderBar from '../components/layout/HeaderBar';
 import ContentContainer from '../components/layout/ContentContainer';
 import HeaderAction from '../components/ui/HeaderAction';
 import AppButton from '../components/ui/AppButton';
-import { setHasSeenOnboarding } from '../storage/onboarding';
+import { ScreenNames } from '../constants/screens';
+import { setHasSeenOnboarding } from '../storage/authState';
 import { RootStackParamList } from '../types/navigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
@@ -39,7 +40,7 @@ const PAGES = [
 ];
 
 export default function OnboardingScreen({ navigation }: Props) {
-	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+	const { height: screenHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const pagerRef = useRef<PagerView>(null);
 	const [pageIndex, setPageIndex] = useState(0);
@@ -51,9 +52,10 @@ export default function OnboardingScreen({ navigation }: Props) {
 		if (isFinishing) return;
 		setIsFinishing(true);
 		await setHasSeenOnboarding(true);
-		navigation.reset({
+		const rootNav = navigation.getParent();
+		rootNav?.reset({
 			index: 0,
-			routes: [{ name: 'Signup' }],
+			routes: [{ name: ScreenNames.Root.AuthFlow }],
 		});
 	};
 
