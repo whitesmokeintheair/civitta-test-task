@@ -18,7 +18,7 @@ import PasswordInput from '../components/ui/PasswordInput';
 import Checkbox from '../components/ui/Checkbox';
 import AppButton from '../components/ui/AppButton';
 import { ScreenNames } from '../constants/screens';
-import { signup } from '../services/signup';
+import { DEMO_SIGNUP_RESPONSE, signup } from '../services/signup';
 import { setSignedUp } from '../storage/authState';
 import { RootStackParamList } from '../types/navigation';
 
@@ -42,16 +42,17 @@ export default function SignupScreen({ navigation }: Props) {
 	const [acceptedTerms, setAcceptedTerms] = useState(false);
 	const [errors, setErrors] = useState<FormErrors>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
-	const canSubmit = useMemo(
-		() =>
-			!isSubmitting &&
-			name.trim() &&
-			email.trim() &&
-			password.trim() &&
-			acceptedTerms,
-		[acceptedTerms, email, isSubmitting, name, password],
-	);
+	const canSubmit = useMemo(() => {
+		const ok =
+			name.trim().length > 0 &&
+			email.trim().length > 0 &&
+			password.trim().length > 0 &&
+			acceptedTerms;
+
+		return ok && !isSubmitting;
+	}, [acceptedTerms, email, isSubmitting, name, password]);
 
 	const openExampleLink = () => {
 		Linking.openURL(LINK_URL);
@@ -80,6 +81,9 @@ export default function SignupScreen({ navigation }: Props) {
 	};
 
 	const onSubmit = async () => {
+		if (isSubmitting) return;
+
+		setSubmitError(null);
 		if (!validate()) return;
 
 		setIsSubmitting(true);
@@ -89,15 +93,32 @@ export default function SignupScreen({ navigation }: Props) {
 				email: email.trim(),
 				password: password.trim(),
 			});
+			console.log('[signup] response:', response);
 			await setSignedUp(true, response);
 			const rootNav = navigation.getParent();
 			rootNav?.reset({
 				index: 0,
 				routes: [{ name: ScreenNames.Root.MainFlow }],
 			});
+		} catch (e: unknown) {
+			if (e instanceof Error) {
+				console.log('[signup] error:', e.message);
+				setSubmitError('Signup failed. Please try again.');
+			}
 		} finally {
 			setIsSubmitting(false);
 		}
+	};
+
+	const proceedWithDemoData = async () => {
+		setSubmitError(null);
+		await setSignedUp(true, DEMO_SIGNUP_RESPONSE);
+
+		const rootNav = navigation.getParent();
+		rootNav?.reset({
+			index: 0,
+			routes: [{ name: ScreenNames.Root.MainFlow }],
+		});
 	};
 
 	return (
@@ -143,6 +164,7 @@ export default function SignupScreen({ navigation }: Props) {
 									value={name}
 									onChangeText={(value) => {
 										setName(value);
+										if (submitError) setSubmitError(null);
 										if (errors.name)
 											setErrors((prev) => ({ ...prev, name: undefined }));
 									}}
@@ -155,6 +177,7 @@ export default function SignupScreen({ navigation }: Props) {
 									value={email}
 									onChangeText={(value) => {
 										setEmail(value);
+										if (submitError) setSubmitError(null);
 										if (errors.email)
 											setErrors((prev) => ({ ...prev, email: undefined }));
 									}}
@@ -167,6 +190,7 @@ export default function SignupScreen({ navigation }: Props) {
 									value={password}
 									onChangeText={(value) => {
 										setPassword(value);
+										if (submitError) setSubmitError(null);
 										if (errors.password) {
 											setErrors((prev) => ({ ...prev, password: undefined }));
 										}
@@ -219,12 +243,26 @@ export default function SignupScreen({ navigation }: Props) {
 							</Text>
 						</Text>
 
-						<AppButton
-							title='Create account'
-							onPress={onSubmit}
-							loading={isSubmitting}
-							disabled={!canSubmit}
-						/>
+						{submitError ? (
+							<View style={{ gap: 10 }}>
+								<Text style={styles.submitError}>{submitError}</Text>
+
+								{__DEV__ && (
+									<AppButton
+										title='Use demo data'
+										onPress={proceedWithDemoData}
+										disabled={isSubmitting}
+									/>
+								)}
+							</View>
+						) : (
+							<AppButton
+								title='Create account'
+								onPress={onSubmit}
+								loading={isSubmitting}
+								disabled={!canSubmit}
+							/>
+						)}
 					</View>
 				</View>
 			</KeyboardAvoidingView>
@@ -288,5 +326,11 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		lineHeight: 24,
 		color: '#111827',
+	},
+	submitError: {
+		textAlign: 'center',
+		fontSize: 13,
+		lineHeight: 18,
+		color: '#DC2626',
 	},
 });

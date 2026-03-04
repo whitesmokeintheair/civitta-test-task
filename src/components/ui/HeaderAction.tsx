@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 type HeaderActionProps = {
 	type: 'text' | 'icon';
@@ -19,7 +20,9 @@ export default function HeaderAction({
 	const isIcon = type === 'icon';
 	const content =
 		isIcon ? (
-			(icon ?? <Text style={styles.iconText}>{'<'}</Text>)
+			(
+				icon ?? <Ionicons name='chevron-back' size={20} color='#111827' />
+			)
 		) : (
 			<Text style={styles.textLabel}>{label}</Text>
 		);
@@ -64,11 +67,5 @@ const styles = StyleSheet.create({
 	textLabel: {
 		color: '#131313',
 		fontSize: 14,
-	},
-	iconText: {
-		color: '#111827',
-		fontSize: 18,
-		lineHeight: 22,
-		fontWeight: '600',
 	},
 });
