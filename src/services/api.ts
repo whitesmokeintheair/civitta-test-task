@@ -42,7 +42,6 @@ export async function postJson<TReq, TRes>(
 			timeout: 15000,
 		});
 
-		console.log(res.data, 'data');
 		return res.data;
 	} catch (err: unknown) {
 		const message = getAxiosErrorMessage(err);

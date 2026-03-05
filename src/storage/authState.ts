@@ -24,8 +24,8 @@ export async function getAuthState(): Promise<AuthState> {
 		]);
 
 		return {
-			hasSeenOnboarding: hasSeenValue === 'false',
-			isSignedUp: isSignedUpValue === 'false',
+			hasSeenOnboarding: hasSeenValue === 'true',
+			isSignedUp: isSignedUpValue === 'true',
 			accountData,
 		};
 	} catch {
