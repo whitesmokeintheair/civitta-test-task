@@ -46,25 +46,28 @@ Start the development server:
 
 `npx expo start`
 
-Architecture
+## Architecture
 
 The project separates responsibilities into clear layers:
 
+```
 src
-├── components UI components
-├── screens Application screens
-├── navigation Navigation setup
-├── services API communication
-├── usecases Business logic (signup flow)
-├── mappers API → UI data transformations
-├── storage AsyncStorage helpers
-├── theme Light / dark theme system
-└── types TypeScript models
+├── components      # UI components
+├── screens         # Application screens
+├── navigation      # Navigation setup
+├── services        # API communication
+├── usecases        # Business logic (signup flow)
+├── mappers         # API → UI data transformations
+├── storage         # AsyncStorage helpers
+├── theme           # Light / dark theme system
+└── types           # TypeScript models
+```
 
-State Management
+## State Management
 
-Local component state is handled with useState.
+Local component state is handled with **React hooks (`useState`)**.
 
-Persistent state uses AsyncStorage for:
-• onboarding completion
-• account data storage
+Persistent state uses **AsyncStorage** for:
+
+- onboarding completion
+- account data storage
