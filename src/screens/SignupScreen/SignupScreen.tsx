@@ -22,7 +22,8 @@ import { setSignedUp } from '../../storage/authState';
 import { setStoredAccountData } from '../../storage/accountData';
 import { runSignupFlow } from '../../useCases/signupFlow';
 import type { SignupScreenProps } from '../../navigation/types';
-import { styles } from './styles';
+import { useTheme } from '../../theme/ThemeContext';
+import { createStyles } from './styles';
 
 type FormErrors = {
 	name?: string;
@@ -36,6 +37,8 @@ const FOOTER_BLOCK_HEIGHT = 118;
 
 export const SignupScreen = ({ navigation }: SignupScreenProps) => {
 	const insets = useSafeAreaInsets();
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');

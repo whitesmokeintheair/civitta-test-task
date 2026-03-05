@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type HeaderBarProps = {
 	title?: string;
@@ -13,6 +13,9 @@ export const HeaderBar = ({
 	leftAction,
 	rightAction,
 }: HeaderBarProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.sideSlot}>{leftAction}</View>
@@ -24,7 +27,8 @@ export const HeaderBar = ({
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+	StyleSheet.create({
 	container: {
 		minHeight: 52,
 		flexDirection: 'row',
@@ -48,6 +52,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 16,
 		lineHeight: 20,
-		color: colors.textStrong,
+		color: colors.textPrimary,
 	},
-});
+	});

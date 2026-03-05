@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,8 +10,8 @@ import { Avatar } from '../../components/ui/Avatar';
 import type { Transaction } from '../../types/api';
 import type { MyAccountScreenProps } from '../../navigation/types';
 import { useAccountData } from '../../hooks/useAccountData';
-import { colors } from '../../constants/colors';
-import { styles } from './styles';
+import { useTheme } from '../../theme/ThemeContext';
+import { createStyles } from './styles';
 
 function isPositiveAmount(value: string): boolean {
 	const numericValue = Number(value.replace(/[^\d.-]/g, ''));
@@ -20,6 +20,8 @@ function isPositiveAmount(value: string): boolean {
 
 export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 	const insets = useSafeAreaInsets();
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
 	const accountData = useAccountData();
 
 	if (!accountData) {
@@ -40,7 +42,7 @@ export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 				}
 			>
 				<View style={{ padding: 20 }}>
-					<Text>No account data found.</Text>
+					<Text style={{ color: colors.textPrimary }}>No account data found.</Text>
 				</View>
 			</PageContainer>
 		);

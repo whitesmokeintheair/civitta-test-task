@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import {
 	KeyboardTypeOptions,
 	StyleSheet,
@@ -7,7 +7,7 @@ import {
 	TextInputProps,
 	View,
 } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type AppInputProps = {
 	label: string;
@@ -32,6 +32,9 @@ export const AppInput = ({
 	error,
 	right,
 }: AppInputProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
+
 	return (
 		<View style={styles.wrapper}>
 			<View style={styles.inputBox}>
@@ -45,7 +48,7 @@ export const AppInput = ({
 						autoCapitalize={autoCapitalize}
 						secureTextEntry={secureTextEntry}
 						style={styles.input}
-						placeholderTextColor={colors.placeholder}
+						placeholderTextColor={colors.textTertiary}
 					/>
 					{right ? <View style={styles.rightSlot}>{right}</View> : null}
 				</View>
@@ -55,12 +58,13 @@ export const AppInput = ({
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+	StyleSheet.create({
 	wrapper: {
 		width: '100%',
 	},
 	inputBox: {
-		backgroundColor: colors.white,
+		backgroundColor: colors.backgroundSecondary,
 		borderRadius: 16,
 		paddingHorizontal: 20,
 		paddingVertical: 8,
@@ -74,7 +78,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: '600',
-		color: colors.textMuted,
+		color: colors.textTertiary,
 		marginBottom: 6,
 	},
 	input: {
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
 	errorText: {
 		fontSize: 12,
 		lineHeight: 16,
-		color: colors.error,
+		color: colors.systemError,
 		marginTop: 6,
 	},
-});
+	});

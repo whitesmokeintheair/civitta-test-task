@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 import { AppInput } from './AppInput';
 
 type PasswordInputProps = {
@@ -19,6 +19,7 @@ export const PasswordInput = ({
   placeholder,
   error,
 }: PasswordInputProps) => {
+  const { colors } = useTheme();
   const [isHidden, setIsHidden] = useState(true);
 
 	const toggle = (
@@ -34,7 +35,7 @@ export const PasswordInput = ({
 			<Ionicons
 				name={isHidden ? 'eye-outline' : 'eye-off-outline'}
 				size={20}
-				color={colors.brandPrimary}
+				color={colors.titlePrimary}
 			/>
 		</Pressable>
 	);

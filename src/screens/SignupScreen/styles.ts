@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../constants/colors';
+import type { ThemePalette } from '../../theme/types';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemePalette) => StyleSheet.create({
 	flex: {
 		flex: 1,
 	},
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
 		fontSize: 44,
 		lineHeight: 50,
 		fontWeight: '700',
-		color: colors.brandTitle,
+		color: colors.titlePrimary,
 	},
 	subtitle: {
 		marginTop: 10,
@@ -36,21 +36,21 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		fontSize: 14,
 		lineHeight: 22,
-		color: colors.termsText,
+		color: colors.textPrimary,
 	},
 	link: {
-		color: colors.brandPrimary,
+		color: colors.titlePrimary,
 	},
 	termsError: {
 		marginTop: 8,
 		fontSize: 12,
 		lineHeight: 16,
-		color: colors.error,
+		color: colors.systemError,
 	},
 	footer: {
 		gap: 16,
 		paddingHorizontal: 20,
-		backgroundColor: colors.screenBackground,
+		backgroundColor: colors.backgroundPrimary,
 	},
 	footerText: {
 		textAlign: 'center',
@@ -62,6 +62,6 @@ export const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 13,
 		lineHeight: 18,
-		color: colors.error,
+		color: colors.systemError,
 	},
 });

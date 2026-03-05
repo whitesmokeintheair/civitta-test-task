@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type CheckboxProps = {
   checked: boolean;
@@ -8,6 +8,9 @@ type CheckboxProps = {
 };
 
 export const Checkbox = ({ checked, onChange }: CheckboxProps) => {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <Pressable onPress={onChange} style={styles.button} hitSlop={8}>
       <View style={styles.box}>{checked ? <View style={styles.inner} /> : null}</View>
@@ -15,7 +18,8 @@ export const Checkbox = ({ checked, onChange }: CheckboxProps) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+  StyleSheet.create({
   button: {
     minWidth: 28,
     minHeight: 28,
@@ -26,9 +30,9 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderSubtle,
     borderRadius: 4,
-    backgroundColor: colors.white,
+    backgroundColor: colors.backgroundSecondary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -36,6 +40,6 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 2,
-    backgroundColor: colors.brandPrimary,
+    backgroundColor: colors.buttonPrimary,
   },
 });

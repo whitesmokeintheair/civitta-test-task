@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../constants/colors';
+import type { ThemePalette } from '../../theme/types';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemePalette) => StyleSheet.create({
 	screen: {
 		flex: 1,
 		alignItems: 'center',
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		fontWeight: '700',
-		color: colors.brandTitle,
+		color: colors.titlePrimary,
 		textAlign: 'center',
 	},
 	body: {
@@ -46,12 +46,12 @@ export const styles = StyleSheet.create({
 		width: 6,
 		height: 6,
 		borderRadius: 4,
-		backgroundColor: colors.dotInactive,
+		backgroundColor: colors.systemSecondary,
 	},
 	activeDot: {
 		width: 6,
 		height: 18,
 		borderRadius: 5,
-		backgroundColor: colors.brandPrimary,
+		backgroundColor: colors.buttonPrimary,
 	},
 });

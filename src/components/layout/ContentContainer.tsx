@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import {
 	Pressable,
 	StyleProp,
@@ -7,7 +7,7 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type ContentContainerProps = PropsWithChildren<{
 	hasHeader?: boolean;
@@ -21,6 +21,9 @@ export const ContentContainer = ({
 	headerTitle,
 	style,
 }: ContentContainerProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
+
 	return (
 		<View style={[styles.container, style]}>
 			{hasHeader ? (
@@ -36,10 +39,11 @@ export const ContentContainer = ({
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+	StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.surface,
+		backgroundColor: colors.backgroundSecondary,
 		borderRadius: 48,
 		paddingHorizontal: 24,
 		paddingVertical: 18,
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
 		minWidth: 44,
 		minHeight: 30,
 		borderRadius: 15,
-		backgroundColor: colors.surfaceMuted,
+		backgroundColor: colors.buttonTertiary,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 10,
@@ -72,4 +76,4 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		color: colors.textTertiary,
 	},
-});
+	});

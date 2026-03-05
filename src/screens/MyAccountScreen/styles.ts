@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../constants/colors';
+import type { ThemePalette } from '../../theme/types';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: ThemePalette) => StyleSheet.create({
 	headerWrap: {
 		position: 'relative',
 	},
@@ -18,12 +18,12 @@ export const styles = StyleSheet.create({
 		width: 54,
 		height: 54,
 		borderRadius: 12,
-		backgroundColor: colors.bankLogoBackground,
+		backgroundColor: colors.titlePrimary,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	logoText: {
-		color: colors.white,
+		color: colors.backgroundSecondary,
 		fontSize: 28,
 		lineHeight: 30,
 		fontWeight: '700',
@@ -54,11 +54,11 @@ export const styles = StyleSheet.create({
 	infoValue: {
 		fontSize: 14,
 		lineHeight: 22,
-		color: colors.textStrong,
+		color: colors.textPrimary,
 		fontWeight: '500',
 	},
 	infoValuePositive: {
-		color: colors.success,
+		color: colors.systemSuccess,
 	},
 	transactionsCard: {
 		borderRadius: 18,
@@ -75,14 +75,14 @@ export const styles = StyleSheet.create({
 	transactionsTitle: {
 		fontSize: 14,
 		lineHeight: 22,
-		color: colors.textStrong,
+		color: colors.textPrimary,
 		fontWeight: '600',
 	},
 	chevronButton: {
 		width: 24,
 		height: 24,
 		borderRadius: 12,
-		backgroundColor: colors.surfacePressed,
+		backgroundColor: colors.buttonTertiary,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -101,12 +101,12 @@ export const styles = StyleSheet.create({
 	},
 	transactionTitle: {
 		fontSize: 14,
-		color: colors.textStrong,
+		color: colors.textPrimary,
 		fontWeight: '600',
 	},
 	transactionSubtitle: {
 		fontSize: 12,
-		color: colors.textSubtle,
+		color: colors.textTertiary,
 		fontWeight: 400,
 	},
 	transactionAmount: {

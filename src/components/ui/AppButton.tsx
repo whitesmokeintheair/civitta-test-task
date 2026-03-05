@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type AppButtonProps = {
 	title: string;
@@ -15,6 +15,8 @@ export const AppButton = ({
 	disabled = false,
 	loading = false,
 }: AppButtonProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
 	const isDisabled = disabled || loading;
 
 	return (
@@ -28,7 +30,7 @@ export const AppButton = ({
 			disabled={isDisabled}
 		>
 			{loading ? (
-				<ActivityIndicator color={colors.white} />
+				<ActivityIndicator color={colors.buttonPrimaryContent} />
 			) : (
 				<Text style={styles.label}>{title}</Text>
 			)}
@@ -36,11 +38,12 @@ export const AppButton = ({
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+	StyleSheet.create({
 	button: {
 		height: 56,
 		borderRadius: 28,
-		backgroundColor: colors.brandPrimary,
+		backgroundColor: colors.buttonPrimary,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 20,
@@ -52,10 +55,10 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 	},
 	label: {
-		color: colors.white,
+		color: colors.buttonPrimaryContent,
 		fontSize: 16,
 		lineHeight: 36,
 		fontWeight: '600',
 		textAlign: 'center',
 	},
-});
+	});

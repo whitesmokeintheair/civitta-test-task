@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../constants/colors';
+import { useTheme } from '../../theme/ThemeContext';
 
 type AvatarProps = {
 	size?: number;
@@ -13,6 +13,8 @@ export const Avatar = ({
 	uri,
 	fallbackText = 'A',
 }: AvatarProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
 	const radius = size / 2;
 
 	return (
@@ -36,15 +38,16 @@ export const Avatar = ({
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: ReturnType<typeof useTheme>['colors']) =>
+	StyleSheet.create({
 	circle: {
 		overflow: 'hidden',
-		backgroundColor: colors.surfaceSoft,
+		backgroundColor: colors.backgroundPrimary,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	text: {
-		color: colors.brandDark,
+		color: colors.titlePrimary,
 		fontWeight: '600',
 	},
-});
+	});

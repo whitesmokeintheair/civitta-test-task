@@ -14,8 +14,10 @@ export const themePalette = {
 		buttonTertiary: '#F5F7FF',
 		buttonTertiaryContent: '#131313',
 		systemSuccess: '#009218',
+		systemError: '#DC2626',
 		systemPrimary: '#2C14DD',
 		systemSecondary: '#B8B8B8',
+		borderSubtle: '#D2D6E0',
 	},
 	dark: {
 		textPrimary: '#FFFFFF',
@@ -32,7 +34,9 @@ export const themePalette = {
 		buttonTertiary: '#4B3D74',
 		buttonTertiaryContent: '#F5F7FF',
 		systemSuccess: '#60C771',
+		systemError: '#FF5F7F',
 		systemPrimary: '#FFFFFF',
 		systemSecondary: '#503F74',
+		borderSubtle: '#503F74',
 	},
 } as const;

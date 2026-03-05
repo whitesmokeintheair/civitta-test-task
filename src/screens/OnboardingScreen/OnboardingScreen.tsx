@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { Image, Text, View, useWindowDimensions } from 'react-native';
 import PagerView from 'react-native-pager-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +10,8 @@ import { AppButton } from '../../components/ui/AppButton';
 import { ScreenNames } from '../../navigation/screens';
 import { setHasSeenOnboarding } from '../../storage/authState';
 import type { OnboardingScreenProps } from '../../navigation/types';
-import { styles } from './styles';
+import { useTheme } from '../../theme/ThemeContext';
+import { createStyles } from './styles';
 
 const PAGES = [
 	{
@@ -32,6 +33,8 @@ const PAGES = [
 ];
 
 export const OnboardingScreen = ({ navigation }: OnboardingScreenProps) => {
+	const { colors } = useTheme();
+	const styles = useMemo(() => createStyles(colors), [colors]);
 	const { height: screenHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const pagerRef = useRef<PagerView>(null);
