@@ -8,6 +8,7 @@ import {
 	View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { PageContainer } from '../../components/layout/PageContainer';
 import { HeaderBar } from '../../components/layout/HeaderBar';
 import { HeaderAction } from '../../components/ui/HeaderAction';
@@ -16,9 +17,10 @@ import { PasswordInput } from '../../components/ui/PasswordInput';
 import { Checkbox } from '../../components/ui/Checkbox';
 import { AppButton } from '../../components/ui/AppButton';
 import { ScreenNames } from '../../navigation/screens';
-import { DEMO_SIGNUP_RESPONSE, signup } from '../../services/signup';
+import { DEMO_ACCOUNT_DATA } from '../../services/signup';
 import { setSignedUp } from '../../storage/authState';
 import { setStoredAccountData } from '../../storage/accountData';
+import { runSignupFlow } from '../../useCases/signupFlow';
 import type { SignupScreenProps } from '../../navigation/types';
 import { styles } from './styles';
 
@@ -86,21 +88,27 @@ export const SignupScreen = ({ navigation }: SignupScreenProps) => {
 
 		setIsSubmitting(true);
 		try {
-			const response = await signup({
+			const accountData = await runSignupFlow({
 				name: name.trim(),
 				email: email.trim(),
 				password: password.trim(),
 			});
-			await setSignedUp(true, response);
+
+			await setStoredAccountData(accountData);
+			await setSignedUp(true);
+			Toast.show({
+				type: 'success',
+				text1: 'User signup successful!',
+				position: 'top',
+				visibilityTime: 1800,
+			});
 			const rootNav = navigation.getParent();
 			rootNav?.reset({
 				index: 0,
 				routes: [{ name: ScreenNames.Root.MainFlow }],
 			});
 		} catch (e: unknown) {
-			if (e instanceof Error) {
-				setSubmitError('Signup failed. Please try again.');
-			}
+			setSubmitError(e instanceof Error ? e.message : 'Signup failed. Please try again.');
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -108,7 +116,7 @@ export const SignupScreen = ({ navigation }: SignupScreenProps) => {
 
 	const proceedWithDemoData = async () => {
 		setSubmitError(null);
-		await setStoredAccountData(DEMO_SIGNUP_RESPONSE);
+		await setStoredAccountData(DEMO_ACCOUNT_DATA);
 		await setSignedUp(true);
 
 		const rootNav = navigation.getParent();

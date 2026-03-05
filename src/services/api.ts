@@ -1,4 +1,7 @@
 import axios, { AxiosError } from 'axios';
+import { AccountData } from '../types/api';
+
+const BASE_URL = 'https://artjoms-spole.fly.dev';
 
 type ApiErrorBody = {
 	message?: string;
@@ -38,6 +41,8 @@ export async function postJson<TReq, TRes>(
 			},
 			timeout: 15000,
 		});
+
+		console.log(res.data, 'data');
 		return res.data;
 	} catch (err: unknown) {
 		const message = getAxiosErrorMessage(err);
@@ -46,4 +51,26 @@ export async function postJson<TReq, TRes>(
 			`POST ${url} failed${status ? ` (${status})` : ''}: ${message}`,
 		);
 	}
+}
+
+function extractPath(nextStep: string): string {
+	const match = nextStep.match(/\/[a-zA-Z0-9/_-]+/);
+	return match ? match[0] : '/interview/account';
+}
+
+export async function getAccountData(opts: {
+	nextStep: string;
+	username: string;
+	password: string;
+}): Promise<AccountData> {
+	const path = extractPath(opts.nextStep);
+	const url = `${BASE_URL}${path}`;
+
+	const res = await axios.get<AccountData>(url, {
+		auth: { username: opts.username, password: opts.password },
+		headers: { Accept: 'application/json' },
+		timeout: 15000,
+	});
+
+	return res.data;
 }

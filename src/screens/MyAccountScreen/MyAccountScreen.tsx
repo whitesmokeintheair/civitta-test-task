@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,30 +7,50 @@ import { HeaderBar } from '../../components/layout/HeaderBar';
 import { ContentContainer } from '../../components/layout/ContentContainer';
 import { HeaderAction } from '../../components/ui/HeaderAction';
 import { Avatar } from '../../components/ui/Avatar';
-import type { AccountData, Transaction } from '../../types/api';
+import type { Transaction } from '../../types/api';
 import type { MyAccountScreenProps } from '../../navigation/types';
-import { DEMO_SIGNUP_RESPONSE } from '../../services/signup';
-import { getStoredAccountData } from '../../storage/accountData';
+import { useAccountData } from '../../hooks/useAccountData';
+import { colors } from '../../constants/colors';
 import { styles } from './styles';
 
-const DEFAULT_ACCOUNT_DATA: AccountData = DEMO_SIGNUP_RESPONSE;
+function isPositiveAmount(value: string): boolean {
+	const numericValue = Number(value.replace(/[^\d.-]/g, ''));
+	return !Number.isNaN(numericValue) && numericValue > 0;
+}
 
 export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 	const insets = useSafeAreaInsets();
-	const [accountData, setAccountData] = useState<AccountData>(DEFAULT_ACCOUNT_DATA);
+	const accountData = useAccountData();
 
-	useEffect(() => {
-		let mounted = true;
-		async function loadAccountData() {
-			const stored = await getStoredAccountData();
-			if (!mounted) return;
-			if (stored) setAccountData(stored);
-		}
-		loadAccountData();
-		return () => {
-			mounted = false;
-		};
-	}, []);
+	if (!accountData) {
+		return (
+			<PageContainer
+				header={
+					<View style={styles.headerWrap}>
+						<HeaderBar
+							title='My Account'
+							leftAction={
+								<HeaderAction
+									type='icon'
+									onPress={() => navigation.goBack()}
+								/>
+							}
+						/>
+					</View>
+				}
+			>
+				<View style={{ padding: 20 }}>
+					<Text>No account data found.</Text>
+				</View>
+			</PageContainer>
+		);
+	}
+
+	const availableBalanceStyle = isPositiveAmount(
+		accountData.account.availableBalance,
+	)
+		? [styles.infoValue, styles.infoValuePositive]
+		: styles.infoValue;
 
 	return (
 		<PageContainer
@@ -57,7 +77,9 @@ export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 			>
 				<View style={styles.bankSection}>
 					<View style={styles.logoSquare}>
-						<Text style={styles.logoText}>{accountData.bank.logoText}</Text>
+						<Text style={styles.logoText}>
+							{accountData.bank.logoText ?? ''}
+						</Text>
 					</View>
 					<Text style={styles.bankName}>{accountData.bank.name}</Text>
 				</View>
@@ -73,13 +95,15 @@ export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 					</View>
 					<View style={styles.infoRow}>
 						<Text style={styles.infoLabel}>Avaliable Balance</Text>
-						<Text style={[styles.infoValue, styles.infoValuePositive]}>
+						<Text style={availableBalanceStyle}>
 							{accountData.account.availableBalance}
 						</Text>
 					</View>
 					<View style={styles.infoRow}>
 						<Text style={styles.infoLabel}>Date added</Text>
-						<Text style={styles.infoValue}>{accountData.account.dateAdded}</Text>
+						<Text style={styles.infoValue}>
+							{accountData.account.dateAdded}
+						</Text>
 					</View>
 				</ContentContainer>
 
@@ -90,37 +114,36 @@ export const MyAccountScreen = ({ navigation }: MyAccountScreenProps) => {
 							<Ionicons
 								name='chevron-forward'
 								size={14}
-								color='#111827'
+								color={colors.textPrimary}
 							/>
 						</Pressable>
 					</View>
 
 					<View style={styles.transactionList}>
-						{accountData.transactions.map((item: Transaction, index) => (
-							<View
-								key={`${item.title}-${index}`}
-								style={styles.transactionRow}
-							>
-								<Avatar
-									size={40}
-									fallbackText={item.initial}
-								/>
-								<View style={styles.transactionCenter}>
-									<Text style={styles.transactionTitle}>{item.title}</Text>
-									<Text style={styles.transactionSubtitle}>
-										{item.subtitle}
-									</Text>
-								</View>
-								<Text
-									style={[
-										styles.transactionAmount,
-										item.positive && styles.infoValuePositive,
-									]}
+						{accountData.transactions.map((item: Transaction, index) => {
+							const transactionAmountStyle = isPositiveAmount(item.amount)
+								? [styles.transactionAmount, styles.infoValuePositive]
+								: styles.transactionAmount;
+
+							return (
+								<View
+									key={`${item.title}-${index}`}
+									style={styles.transactionRow}
 								>
-									{item.amount}
-								</Text>
-							</View>
-						))}
+									<Avatar
+										size={40}
+										fallbackText={item.initial}
+									/>
+									<View style={styles.transactionCenter}>
+										<Text style={styles.transactionTitle}>{item.title}</Text>
+										<Text style={styles.transactionSubtitle}>
+											{item.subtitle}
+										</Text>
+									</View>
+									<Text style={transactionAmountStyle}>{item.amount}</Text>
+								</View>
+							);
+						})}
 					</View>
 				</ContentContainer>
 			</ScrollView>

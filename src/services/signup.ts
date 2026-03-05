@@ -1,7 +1,7 @@
 import { postJson } from './api';
-import type { SignupRequest, SignupResponse } from '../types/api';
+import type { AccountData, SignupInstruction, SignupRequest } from '../types/api';
 
-export const DEMO_SIGNUP_RESPONSE: SignupResponse = {
+export const DEMO_ACCOUNT_DATA: AccountData = {
 	profile: { name: 'John Ogaga', avatarInitial: 'J' },
 	bank: { name: 'Kuda Bank', logoText: 'K' },
 	account: {
@@ -41,8 +41,10 @@ export const DEMO_SIGNUP_RESPONSE: SignupResponse = {
 
 const SIGNUP_ENDPOINT = 'https://artjoms-spole.fly.dev/signup';
 
-export async function signup(payload: SignupRequest): Promise<SignupResponse> {
-	return await postJson<SignupRequest, SignupResponse>(
+export async function signup(
+	payload: SignupRequest,
+): Promise<SignupInstruction> {
+	return await postJson<SignupRequest, SignupInstruction>(
 		SIGNUP_ENDPOINT,
 		payload,
 	);

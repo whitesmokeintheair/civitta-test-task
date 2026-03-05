@@ -4,6 +4,31 @@ export type SignupRequest = {
 	password: string;
 };
 
+export type SignupInstruction = {
+	basicAuthCredentials: {
+		username: string;
+		password: string;
+	};
+	message?: string;
+	nextStep?: string;
+};
+
+export type AccountTransactionApi = {
+	amount: number;
+	bank: string;
+	name: string;
+	time: string;
+};
+
+export type AccountApiResponse = {
+	accountNumber: string;
+	accountType: string;
+	availableBalance: number;
+	currency: string;
+	dateAdded: string;
+	transactions: AccountTransactionApi[];
+};
+
 export type Transaction = {
 	initial: string;
 	title: string;
@@ -35,5 +60,3 @@ export type AccountData = {
 	account: AccountInfo;
 	transactions: Transaction[];
 };
-
-export type SignupResponse = AccountData;

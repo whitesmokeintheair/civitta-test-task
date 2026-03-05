@@ -6,8 +6,8 @@ import {
 	setStoredAccountData,
 } from './accountData';
 
-const HAS_SEEN_ONBOARDING_KEY = 'has_seen_onboarding_v1';
-const IS_SIGNED_UP_KEY = 'is_signed_up_v1';
+const HAS_SEEN_ONBOARDING_KEY = 'has_seen_onboarding';
+const IS_SIGNED_UP_KEY = 'is_signed_up';
 
 export type AuthState = {
 	hasSeenOnboarding: boolean;
@@ -17,17 +17,15 @@ export type AuthState = {
 
 export async function getAuthState(): Promise<AuthState> {
 	try {
-		const [hasSeenValue, isSignedUpValue, accountData] = await Promise.all(
-			[
-				AsyncStorage.getItem(HAS_SEEN_ONBOARDING_KEY),
-				AsyncStorage.getItem(IS_SIGNED_UP_KEY),
-				getStoredAccountData(),
-			],
-		);
+		const [hasSeenValue, isSignedUpValue, accountData] = await Promise.all([
+			AsyncStorage.getItem(HAS_SEEN_ONBOARDING_KEY),
+			AsyncStorage.getItem(IS_SIGNED_UP_KEY),
+			getStoredAccountData(),
+		]);
 
 		return {
-			hasSeenOnboarding: hasSeenValue === 'true',
-			isSignedUp: isSignedUpValue === 'true',
+			hasSeenOnboarding: hasSeenValue === 'false',
+			isSignedUp: isSignedUpValue === 'false',
 			accountData,
 		};
 	} catch {
@@ -60,6 +58,9 @@ export async function setSignedUp(
 
 export async function clearSignedUp(): Promise<void> {
 	try {
-		await Promise.all([AsyncStorage.removeItem(IS_SIGNED_UP_KEY), clearStoredAccountData()]);
+		await Promise.all([
+			AsyncStorage.removeItem(IS_SIGNED_UP_KEY),
+			clearStoredAccountData(),
+		]);
 	} catch {}
 }
