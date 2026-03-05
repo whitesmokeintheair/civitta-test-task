@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+	DarkTheme,
+	DefaultTheme,
+	NavigationContainer,
+} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import { AppNavigator, InitialFlow } from './src/navigation/AppNavigator';
 import { getAuthState } from './src/storage/authState';
 import { ScreenNames } from './src/navigation/screens';
+import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 
-export const App = () => {
+const AppContent = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [initialFlow, setInitialFlow] = useState<InitialFlow>(
 		ScreenNames.Root.OnboardingFlow,
 	);
+	const { name } = useTheme();
 
 	useEffect(() => {
 		let mounted = true;
@@ -42,8 +49,19 @@ export const App = () => {
 	}
 
 	return (
-		<NavigationContainer>
-			<AppNavigator initialFlow={initialFlow} />
-		</NavigationContainer>
+		<>
+			<NavigationContainer theme={name === 'dark' ? DarkTheme : DefaultTheme}>
+				<AppNavigator initialFlow={initialFlow} />
+			</NavigationContainer>
+			<Toast />
+		</>
+	);
+};
+
+export const App = () => {
+	return (
+		<ThemeProvider>
+			<AppContent />
+		</ThemeProvider>
 	);
 };

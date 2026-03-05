@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
 	screen: {
@@ -23,14 +24,14 @@ export const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		fontWeight: '700',
-		color: '#3121D5',
+		color: colors.brandTitle,
 		textAlign: 'center',
 	},
 	body: {
 		marginTop: 16,
 		fontSize: 14,
 		lineHeight: 21,
-		color: '#6B7280',
+		color: colors.textSecondary,
 		textAlign: 'center',
 		paddingHorizontal: 16,
 	},
@@ -45,12 +46,12 @@ export const styles = StyleSheet.create({
 		width: 6,
 		height: 6,
 		borderRadius: 4,
-		backgroundColor: '#D1D5DB',
+		backgroundColor: colors.dotInactive,
 	},
 	activeDot: {
 		width: 6,
 		height: 18,
 		borderRadius: 5,
-		backgroundColor: '#2F2CE5',
+		backgroundColor: colors.brandPrimary,
 	},
 });

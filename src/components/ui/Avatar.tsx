@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type AvatarProps = {
 	size?: number;
@@ -38,12 +39,12 @@ export const Avatar = ({
 const styles = StyleSheet.create({
 	circle: {
 		overflow: 'hidden',
-		backgroundColor: '#F5F7FF',
+		backgroundColor: colors.surfaceSoft,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	text: {
-		color: '#2C14DD',
+		color: colors.brandDark,
 		fontWeight: '600',
 	},
 });

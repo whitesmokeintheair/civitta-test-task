@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type AppButtonProps = {
 	title: string;
@@ -27,7 +28,7 @@ export const AppButton = ({
 			disabled={isDisabled}
 		>
 			{loading ? (
-				<ActivityIndicator color='#FFFFFF' />
+				<ActivityIndicator color={colors.white} />
 			) : (
 				<Text style={styles.label}>{title}</Text>
 			)}
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
 	button: {
 		height: 56,
 		borderRadius: 28,
-		backgroundColor: '#2F2CE5',
+		backgroundColor: colors.brandPrimary,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 20,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 	},
 	label: {
-		color: '#FFFFFF',
+		color: colors.white,
 		fontSize: 16,
 		lineHeight: 36,
 		fontWeight: '600',

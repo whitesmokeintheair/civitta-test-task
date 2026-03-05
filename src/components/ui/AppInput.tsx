@@ -7,6 +7,7 @@ import {
 	TextInputProps,
 	View,
 } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type AppInputProps = {
 	label: string;
@@ -44,7 +45,7 @@ export const AppInput = ({
 						autoCapitalize={autoCapitalize}
 						secureTextEntry={secureTextEntry}
 						style={styles.input}
-						placeholderTextColor='#A9AFBF'
+						placeholderTextColor={colors.placeholder}
 					/>
 					{right ? <View style={styles.rightSlot}>{right}</View> : null}
 				</View>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	inputBox: {
-		backgroundColor: '#FFFFFF',
+		backgroundColor: colors.white,
 		borderRadius: 16,
 		paddingHorizontal: 20,
 		paddingVertical: 8,
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: '600',
-		color: '#8F97AB',
+		color: colors.textMuted,
 		marginBottom: 6,
 	},
 	input: {
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
 		minHeight: 32,
 		fontSize: 16,
 		lineHeight: 22,
-		color: '#111827',
+		color: colors.textPrimary,
 		paddingVertical: 0,
 	},
 	rightSlot: {
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
 	errorText: {
 		fontSize: 12,
 		lineHeight: 16,
-		color: '#DC2626',
+		color: colors.error,
 		marginTop: 6,
 	},
 });

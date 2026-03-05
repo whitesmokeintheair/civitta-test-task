@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../constants/colors';
 
 type PageContainerProps = {
 	children: ReactNode;
@@ -24,11 +25,11 @@ export const PageContainer = ({
 const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
-		backgroundColor: '#F4F6FF',
+		backgroundColor: colors.screenBackground,
 	},
 	container: {
 		flex: 1,
-		backgroundColor: '#F4F6FF',
+		backgroundColor: colors.screenBackground,
 	},
 	header: {
 		paddingTop: 8,

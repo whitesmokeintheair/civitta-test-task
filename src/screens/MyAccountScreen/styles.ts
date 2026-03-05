@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 export const styles = StyleSheet.create({
 	headerWrap: {
@@ -17,12 +18,12 @@ export const styles = StyleSheet.create({
 		width: 54,
 		height: 54,
 		borderRadius: 12,
-		backgroundColor: '#4D2B87',
+		backgroundColor: colors.bankLogoBackground,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	logoText: {
-		color: '#FFFFFF',
+		color: colors.white,
 		fontSize: 28,
 		lineHeight: 30,
 		fontWeight: '700',
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
 		marginTop: 10,
 		fontSize: 14,
 		fontWeight: '600',
-		color: '#111827',
+		color: colors.textPrimary,
 	},
 	infoCard: {
 		flex: 0,
@@ -48,16 +49,16 @@ export const styles = StyleSheet.create({
 	infoLabel: {
 		fontSize: 14,
 		lineHeight: 22,
-		color: '#6B7280',
+		color: colors.textSecondary,
 	},
 	infoValue: {
 		fontSize: 14,
 		lineHeight: 22,
-		color: '#131313',
+		color: colors.textStrong,
 		fontWeight: '500',
 	},
 	infoValuePositive: {
-		color: '#009218',
+		color: colors.success,
 	},
 	transactionsCard: {
 		borderRadius: 18,
@@ -74,14 +75,14 @@ export const styles = StyleSheet.create({
 	transactionsTitle: {
 		fontSize: 14,
 		lineHeight: 22,
-		color: '#131313',
+		color: colors.textStrong,
 		fontWeight: '600',
 	},
 	chevronButton: {
 		width: 24,
 		height: 24,
 		borderRadius: 12,
-		backgroundColor: '#EFF1F8',
+		backgroundColor: colors.surfacePressed,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -100,18 +101,18 @@ export const styles = StyleSheet.create({
 	},
 	transactionTitle: {
 		fontSize: 14,
-		color: '#131313',
+		color: colors.textStrong,
 		fontWeight: '600',
 	},
 	transactionSubtitle: {
 		fontSize: 12,
-		color: '#8B93A7',
+		color: colors.textSubtle,
 		fontWeight: 400,
 	},
 	transactionAmount: {
 		fontSize: 15,
 		lineHeight: 22,
-		color: '#111827',
+		color: colors.textPrimary,
 		fontWeight: '500',
 	},
 });

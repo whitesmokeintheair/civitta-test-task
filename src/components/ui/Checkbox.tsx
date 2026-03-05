@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type CheckboxProps = {
   checked: boolean;
@@ -25,9 +26,9 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: '#D2D6E0',
+    borderColor: colors.border,
     borderRadius: 4,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -35,6 +36,6 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 2,
-    backgroundColor: '#2F2CE5',
+    backgroundColor: colors.brandPrimary,
   },
 });

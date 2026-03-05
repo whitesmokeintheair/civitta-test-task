@@ -7,6 +7,7 @@ import {
 	View,
 	ViewStyle,
 } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type ContentContainerProps = PropsWithChildren<{
 	hasHeader?: boolean;
@@ -38,7 +39,7 @@ export const ContentContainer = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#FFFFFF',
+		backgroundColor: colors.surface,
 		borderRadius: 48,
 		paddingHorizontal: 24,
 		paddingVertical: 18,
@@ -55,13 +56,13 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		lineHeight: 30,
 		fontWeight: '700',
-		color: '#111827',
+		color: colors.textPrimary,
 	},
 	headerAction: {
 		minWidth: 44,
 		minHeight: 30,
 		borderRadius: 15,
-		backgroundColor: '#F3F4F6',
+		backgroundColor: colors.surfaceMuted,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 10,
@@ -69,6 +70,6 @@ const styles = StyleSheet.create({
 	headerActionLabel: {
 		fontSize: 13,
 		fontWeight: '600',
-		color: '#374151',
+		color: colors.textTertiary,
 	},
 });

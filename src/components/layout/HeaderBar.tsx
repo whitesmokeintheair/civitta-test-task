@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { colors } from '../../constants/colors';
 
 type HeaderBarProps = {
 	title?: string;
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 16,
 		lineHeight: 20,
-		color: '#131313',
+		color: colors.textStrong,
 	},
 });
