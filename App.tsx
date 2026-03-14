@@ -16,7 +16,34 @@ const AppContent = () => {
 	const [initialFlow, setInitialFlow] = useState<InitialFlow>(
 		ScreenNames.Root.OnboardingFlow,
 	);
-	const { name } = useTheme();
+	const { name, colors } = useTheme();
+
+	const navigationTheme =
+		name === 'dark'
+			? {
+					...DarkTheme,
+					colors: {
+						...DarkTheme.colors,
+						background: colors.backgroundPrimary,
+						card: colors.backgroundSecondary,
+						text: colors.textPrimary,
+						border: colors.systemSecondary,
+						primary: colors.systemPrimary,
+						notification: colors.systemPrimary,
+					},
+				}
+			: {
+					...DefaultTheme,
+					colors: {
+						...DefaultTheme.colors,
+						background: colors.backgroundPrimary,
+						card: colors.backgroundSecondary,
+						text: colors.textPrimary,
+						border: colors.systemSecondary,
+						primary: colors.systemPrimary,
+						notification: colors.systemPrimary,
+					},
+				};
 
 	useEffect(() => {
 		let mounted = true;
@@ -25,6 +52,7 @@ const AppContent = () => {
 			try {
 				const { hasSeenOnboarding, isSignedUp } = await getAuthState();
 				if (!mounted) return;
+
 				if (!hasSeenOnboarding) {
 					setInitialFlow(ScreenNames.Root.OnboardingFlow);
 				} else if (!isSignedUp) {
@@ -44,13 +72,22 @@ const AppContent = () => {
 		};
 	}, []);
 
+	console.log('theme name', name, colors.backgroundPrimary);
+
 	if (isLoading) {
-		return <View style={{ flex: 1 }} />;
+		return (
+			<View
+				style={{
+					flex: 1,
+					backgroundColor: colors.backgroundPrimary,
+				}}
+			/>
+		);
 	}
 
 	return (
 		<>
-			<NavigationContainer theme={name === 'dark' ? DarkTheme : DefaultTheme}>
+			<NavigationContainer theme={navigationTheme}>
 				<AppNavigator initialFlow={initialFlow} />
 			</NavigationContainer>
 			<Toast />
